@@ -58,6 +58,20 @@ function installPipRequirements(){
 			echo "Successful install requirements.txt"
 		fi
 	fi
+	if [ -e "Pipfile" ]; then
+		echo "Install from pipfile"
+		if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
+			pipenv install --system --deploy
+		else
+			pipenv install --system --deploy
+		fi
+
+		if [ "${?}" -ne 0 ]; then
+			echo "Failed to install Pipfile"
+		else
+			echo "Successful install Pipfile"
+		fi
+	fi
 }
 
 function runCdk(){
