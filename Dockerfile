@@ -1,9 +1,14 @@
-FROM alpine:3
+FROM python:3.8-slim
 
-RUN apk --update --no-cache add nodejs nodejs-npm python3 py3-pip jq curl bash git docker build-base && \
-	ln -sf /usr/bin/python3 /usr/bin/python
+# Configure apt and install packages
+RUN apt-get update \
+  && export DEBIAN_FRONTEND=noninteractive \
+  #
+  # Verify git, common tools / libs installed, add/modify non-root user, optionally install zsh
+  && apt-get -y install --no-install-recommends curl ca-certificates 2>&1 
 
-RUN pip install pipenv
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+&& apt-get install -y nodejs && npm install -g aws-cdk
 
 COPY entrypoint.sh /entrypoint.sh
 
